@@ -6,21 +6,21 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Button } from "../ui/button";
-import { ThemedText } from "../ThemedText";
 
-export default function FormCard() {
+export type CardProps = {
+  title: string;
+  description?: string;
+  children?: React.ReactNode;
+};
+
+export default function FormCard({ children, title, description }: CardProps) {
   return (
     <Card className="p-2 m-2 w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Checkout Page</CardTitle>
-        <CardDescription>Checkout Page ticket scanner</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>
-        <Button>
-          <ThemedText>Scan</ThemedText>
-        </Button>
-      </CardContent>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 }

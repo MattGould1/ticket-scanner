@@ -5,14 +5,13 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { ThemedText } from "~/components/ThemedText";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,6 +39,14 @@ export default function RootLayout() {
           name="index"
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="qr-scan/index"
+          options={{
+            headerShown: true,
+            title: "QR Code Scanner",
+            headerBackVisible: true,
           }}
         />
         <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />

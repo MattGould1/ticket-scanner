@@ -1,25 +1,29 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  Theme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Image, View } from "react-native";
 import { useColorScheme } from "~/lib/useColorScheme";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Stack } from "expo-router";
-import { ThemedText } from "~/components/ThemedText";
 import Container from "~/components/layout/Container";
 import { ThemedView } from "~/components/ThemedView";
 import FormCard from "~/components/cards/FormCard";
-// import { Image } from "react-native-svg";
+import { ThemedText } from "~/components/ThemedText";
+import { Button } from "../components/ui/button";
+import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
-  const { isDarkColorScheme, setColorScheme } = useColorScheme();
+  const router = useRouter();
+  const { setColorScheme } = useColorScheme();
   setColorScheme("dark");
+
+  const navigateToQRCodeScan = () => {
+    router.push("/qr-scan");
+  };
+
+  const cardContent = (
+    <View style={styles.container}>
+      <Button onPress={navigateToQRCodeScan}>
+        <ThemedText>Scan</ThemedText>
+      </Button>
+    </View>
+  );
 
   return (
     <ThemedView>
@@ -29,7 +33,11 @@ export default function LoginScreen() {
           style={styles.logo}
         ></Image>
 
-        <FormCard></FormCard>
+        <FormCard
+          title="Scan QR Code"
+          description="Scan your QR Code"
+          children={cardContent}
+        ></FormCard>
       </Container>
     </ThemedView>
   );
@@ -44,5 +52,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 100,
+  },
+  container: {
+    height: 400,
   },
 });

@@ -11,7 +11,7 @@ export default function CenteredFullScreenContainer({
 }: ContainerProps) {
   return (
     <View
-      className={`container p-1 flex ${
+      className={`w-full p-1 flex ${
         center ? "justify-center items-center" : ""
       } ${fullScreen ? "h-screen" : ""}`}
       {...props}
