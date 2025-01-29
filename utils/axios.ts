@@ -1,27 +1,38 @@
-import axios from "axios";
-import { store } from "../store/store";
-import { logout } from "../store/slices/authSlice";
+import axios, { AxiosInstance } from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:3000",
-});
+let _api: AxiosInstance | undefined;
 
-api.interceptors.request.use((config) => {
-  const token = store.getState().auth.token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+const getApi = () => {
+  if (!_api) {
+    _api = axios.create({
+      baseURL: "http://localhost:3000",
+    });
+
+    _api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        // @TODO maybe some kind of toast
+        console.error(error);
+        return Promise.reject(error);
+      }
+    );
   }
-  return config;
-});
+  return _api;
+};
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      store.dispatch(logout());
-    }
-    return Promise.reject(error);
-  }
-);
+export const apiLogin = async (username: string, password: string) => {
+  return await getApi().post("/auth/login", {
+    username,
+    password,
+  });
+};
 
-export default api;
+export const apiVerifyTicket = async (ticket: any, token: string) => {
+  return await getApi().post("/verifyTicket", ticket, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export default getApi;

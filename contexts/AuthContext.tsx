@@ -13,7 +13,9 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
-  const { token } = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector((state) => {
+    return state.auth;
+  });
 
   useEffect(() => {
     // You can add additional token validation logic here

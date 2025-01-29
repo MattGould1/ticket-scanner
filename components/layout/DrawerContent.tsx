@@ -4,7 +4,7 @@ import { View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
-import { House, Settings, User } from "lucide-react-native";
+import { Camera, Settings } from "lucide-react-native";
 import { Text } from "../ui/text";
 
 export function DrawerContent() {
@@ -14,12 +14,12 @@ export function DrawerContent() {
 
   const handleLogout = () => {
     dispatch(logout());
+
     router.replace("/");
   };
 
   const menuItems = [
-    { icon: House, label: "Home", route: "/home" },
-    { icon: User, label: "Profile", route: "/profile" },
+    { icon: Camera, label: "Scan Tickets", route: "/scan-tickets" },
     { icon: Settings, label: "Settings", route: "/settings" },
   ];
 

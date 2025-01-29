@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "~/utils/axios";
+import { apiLogin } from "~/utils/axios";
 
 interface AuthState {
   token: string | null;
@@ -24,11 +24,7 @@ export const login = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await api.post("/auth/login", {
-        username,
-        password,
-      });
-
+      const response = await apiLogin(username, password);
       await AsyncStorage.setItem("token", response.data.token);
 
       return response.data;
@@ -37,6 +33,7 @@ export const login = createAsyncThunk(
         return rejectWithValue(error.response?.data.message);
       }
 
+      console.log("error", error);
       return rejectWithValue("Unknown Login Error, we've been notified!");
     }
   }
