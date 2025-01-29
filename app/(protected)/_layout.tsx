@@ -1,54 +1,40 @@
-import { Drawer } from "react-native-drawer-layout";
+import { Drawer } from "expo-router/drawer";
+import { DrawerContent } from "../../components/layout/DrawerContent";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
-import { useColorScheme } from "../../lib/useColorScheme";
-import { Slot } from "expo-router";
-import { Button } from "~/components/ui/button";
-import { StyleSheet, View } from "react-native";
-import { useState } from "react";
-import { Text } from "~/components/ui/text";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function ProtectedLayout() {
-  const { colorScheme } = useColorScheme();
-  const isDark = colorScheme === "dark";
-
-  const [open, setOpen] = useState(true);
+  const isDark = true;
 
   return (
-    <GestureHandlerRootView>
+    <ProtectedRoute>
       <Drawer
-        open={open}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        direction="ltr"
-        drawerType="slide"
-        drawerPosition="left"
-        renderDrawerContent={() => {
-          return (
-            <View style={styles.container}>
-              <Button onPress={() => setOpen(false)}>
-                <Text>Close drawer</Text>
-              </Button>
-            </View>
-          );
+        defaultStatus="closed"
+        screenOptions={{
+          headerShown: false,
+          drawerType: "front",
+          drawerStyle: {
+            backgroundColor: isDark ? "#1a1a1a" : "#ffffff",
+            width: "80%",
+          },
+          overlayColor: isDark ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0.5)",
         }}
+        drawerContent={(props) => <DrawerContent />}
       >
-        <ProtectedRoute>
-          <Slot />
-        </ProtectedRoute>
+        <Drawer.Screen
+          name="scan-tickets"
+          options={{
+            drawerLabel: "Scan Tickets",
+            title: "Scan Tickets",
+          }}
+        />
+        <Drawer.Screen
+          name="settings"
+          options={{
+            drawerLabel: "Settings",
+            title: "Settings",
+          }}
+        />
       </Drawer>
-    </GestureHandlerRootView>
+    </ProtectedRoute>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-  },
-  buttons: {
-    gap: 8,
-  },
-});

@@ -4,6 +4,8 @@ import { useRouter } from "expo-router";
 import { useAppSelector } from "../../store/hooks";
 import { ArrowLeft, Bell, Menu } from "lucide-react-native";
 import { Text } from "../ui/text";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerActions } from "@react-navigation/native";
 
 interface HeaderProps {
   title?: string;
@@ -26,6 +28,11 @@ export function Header({
 }: HeaderProps) {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
 
   return (
     <View className="border-b border-gray-200 dark:border-gray-800">
@@ -46,7 +53,7 @@ export function Header({
           {showMenu && (
             <TouchableOpacity
               className="text-base text-foreground"
-              onPress={onMenuPress}
+              onPress={handlePress}
             >
               <Menu size={24} />
             </TouchableOpacity>
