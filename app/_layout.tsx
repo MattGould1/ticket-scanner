@@ -1,9 +1,4 @@
 import "../global.css";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -68,12 +63,8 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <Provider store={store}>
         <AuthProvider>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <Slot />
-            <StatusBar style="auto" />
-          </ThemeProvider>
+          <Slot />
+          <StatusBar style="auto" />
         </AuthProvider>
       </Provider>
     </GestureHandlerRootView>

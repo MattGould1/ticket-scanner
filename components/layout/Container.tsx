@@ -19,7 +19,7 @@ export default function CenteredFullScreenContainer({
         fullScreen ? "h-screen" : ""
       } ${padding ? `p-${padding}` : ""}`}
       {...props}
-      style={[{ height: height - 60 }]}
+      style={fullScreen ? {} : { height: height - 60 }}
     ></View>
   );
 }

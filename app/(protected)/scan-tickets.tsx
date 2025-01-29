@@ -15,6 +15,7 @@ import { AlertTitle, AlertDescription, Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { verifyTicket, VerifyTicketResponse } from "~/utils/api";
 import ActionCard from "~/components/cards/ActionCard";
+import { useColorScheme } from "~/lib/useColorScheme";
 
 export default function ScanTicketScreen() {
   const [scanned, setScanned] = useState(false);
@@ -22,6 +23,7 @@ export default function ScanTicketScreen() {
     null
   );
   const [error, setError] = useState<string | null>(null);
+  const { colorScheme } = useColorScheme();
 
   const handleQRCodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -48,18 +50,7 @@ export default function ScanTicketScreen() {
 
   return (
     <View>
-      <Header
-        title="Scan Tickets"
-        showBack={false}
-        showMenu={true}
-        rightComponent={
-          <TouchableOpacity
-            onPress={() => router.push("/(protected)/settings")}
-          >
-            <Settings size={24} color="white" />
-          </TouchableOpacity>
-        }
-      />
+      <Header title="Scan Tickets" showBack={false} showMenu={true} />
 
       {error != null && (
         <View className="p-4">

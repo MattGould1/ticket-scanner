@@ -1,5 +1,6 @@
 import { router, useRouter } from "expo-router";
 import { Settings } from "lucide-react-native";
+import React from "react";
 import { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header } from "~/components/layout/Header";
@@ -20,18 +21,7 @@ export default function SettingsScreen() {
 
   return (
     <View>
-      <Header
-        title="Settings"
-        showBack={true}
-        rightComponent={
-          <TouchableOpacity
-            className="text-base text-foreground"
-            onPress={() => router.push("/(protected)/settings")}
-          >
-            <Settings size={24} />
-          </TouchableOpacity>
-        }
-      />
+      <Header title="Scan Tickets" showBack={false} showMenu={true} />
 
       <View className="flex-1   p-6 gap-12">
         <View className="flex-row items-center gap-2">

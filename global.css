@@ -47,3 +47,7 @@
     --ring: 240 4.9% 83.9%;
   }
 }
+
+.bg-default {
+  background-color: hsl(var(--background));
+}

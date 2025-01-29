@@ -35,7 +35,7 @@ export function Header({
   };
 
   return (
-    <View className="border-b border-gray-200 dark:border-gray-800">
+    <View className="bg-default border-gray-200 dark:border-gray-800">
       <View
         className="flex-row items-center justify-between px-4"
         style={styles.header}
