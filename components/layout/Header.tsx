@@ -1,7 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { ThemedView } from "../ThemedView";
 import { useAppSelector } from "../../store/hooks";
 import { ArrowLeft, Bell, Menu } from "lucide-react-native";
 import { Text } from "../ui/text";

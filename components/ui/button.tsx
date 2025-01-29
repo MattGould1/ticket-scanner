@@ -3,7 +3,6 @@ import * as React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { cn } from "~/lib/utils";
 import { TextClassContext } from "~/components/ui/text";
-import { NAV_THEME } from "~/lib/constants";
 import { Colors } from "~/constants/Colors";
 
 const buttonVariants = cva(

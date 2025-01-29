@@ -14,6 +14,7 @@ import { Text } from "~/components/ui/text";
 import { AlertTitle, AlertDescription, Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { verifyTicket, VerifyTicketResponse } from "~/utils/api";
+import ActionCard from "~/components/cards/ActionCard";
 
 export default function ScanTicketScreen() {
   const [scanned, setScanned] = useState(false);
@@ -72,41 +73,56 @@ export default function ScanTicketScreen() {
 
       {ticketData != null && (
         <View className="p-4">
-          <View className="mb-4 space-y-4">
-            <View>
-              <Text className="text-2xl font-bold">
-                {ticketData.event.name}
-              </Text>
-              <Text className="text-gray-500">{ticketData.event.date}</Text>
-              <Text className="text-gray-500">{ticketData.event.venue}</Text>
-            </View>
+          <ActionCard
+            title={ticketData.owner.name}
+            content={
+              <View className="p-4">
+                <View className="mb-4 space-y-4">
+                  <View>
+                    <Text className="text-2xl font-bold">
+                      {ticketData.event.name}
+                    </Text>
+                    <Text className="text-gray-500">
+                      {ticketData.event.date}
+                    </Text>
+                    <Text className="text-gray-500">
+                      {ticketData.event.venue}
+                    </Text>
+                  </View>
 
-            <View>
-              <Text className="font-semibold">Ticket Details</Text>
-              <Text>Type: {ticketData.ticketType}</Text>
-              {ticketData.seat && (
-                <Text>
-                  Seat: Section {ticketData.seat.section}, Row{" "}
-                  {ticketData.seat.row}, Seat {ticketData.seat.number}
-                </Text>
-              )}
-            </View>
+                  <View>
+                    <Text className="font-semibold">Ticket Details</Text>
+                    <Text>Type: {ticketData.ticketType}</Text>
+                    {ticketData.seat && (
+                      <Text>
+                        Seat: Section {ticketData.seat.section}, Row{" "}
+                        {ticketData.seat.row}, Seat {ticketData.seat.number}
+                      </Text>
+                    )}
+                  </View>
 
-            <View>
-              <Text className="font-semibold">Ticket Holder</Text>
-              <Text>{ticketData.owner.name}</Text>
-              <Text>{ticketData.owner.email}</Text>
-              {ticketData.owner.phone && <Text>{ticketData.owner.phone}</Text>}
-            </View>
+                  <View>
+                    <Text className="font-semibold">Ticket Holder</Text>
+                    <Text>{ticketData.owner.name}</Text>
+                    <Text>{ticketData.owner.email}</Text>
+                    {ticketData.owner.phone && (
+                      <Text>{ticketData.owner.phone}</Text>
+                    )}
+                  </View>
 
-            <View>
-              <Text className="font-semibold">Purchase Information</Text>
-              <Text>Purchase Date: {ticketData.purchasedDate}</Text>
-            </View>
-          </View>
-          <Button onPress={resetQRCodeScan}>
-            <Text>Tap to scan next ticket</Text>
-          </Button>
+                  <View>
+                    <Text className="font-semibold">Purchase Information</Text>
+                    <Text>Purchase Date: {ticketData.purchasedDate}</Text>
+                  </View>
+                </View>
+              </View>
+            }
+            action={
+              <Button className="w-full" onPress={resetQRCodeScan}>
+                <Text className="text-white">Tap to scan next ticket</Text>
+              </Button>
+            }
+          ></ActionCard>
         </View>
       )}
 
