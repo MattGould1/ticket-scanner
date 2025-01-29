@@ -3,10 +3,9 @@ import { Settings } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header } from "~/components/layout/Header";
-import { Checkbox } from "~/components/ui/checkbox";
+import NavigationMenuImpl from "~/components/layout/NavigationMenu";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
-import { Text } from "~/components/ui/text";
 import { useColorScheme } from "~/lib/useColorScheme";
 
 export default function SettingsScreen() {

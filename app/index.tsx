@@ -26,9 +26,7 @@ type FormData = {
 
 export default function LoginScreen() {
   const dispatch = useAppDispatch();
-  const { isLoading, error, token, user } = useAppSelector(
-    (state) => state.auth
-  );
+  const { isLoading, error } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
 
