@@ -12,10 +12,6 @@ export default function ProtectedLayout() {
         screenOptions={{
           headerShown: false,
           drawerType: "front",
-          drawerStyle: {
-            backgroundColor: isDark ? "#1a1a1a" : "#ffffff",
-            width: "80%",
-          },
           overlayColor: isDark ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0.5)",
         }}
         drawerContent={(props) => <DrawerContent />}

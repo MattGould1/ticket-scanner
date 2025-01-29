@@ -54,7 +54,7 @@ export default function RootLayout() {
       document.documentElement.classList.add("bg-background");
     }
 
-    // setColorScheme("dark");
+    setColorScheme("dark");
     setAndroidNavigationBar(colorScheme);
     setIsColorSchemeLoaded(true);
 

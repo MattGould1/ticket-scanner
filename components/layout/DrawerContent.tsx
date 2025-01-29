@@ -41,7 +41,7 @@ export function DrawerContent() {
             className="flex-row items-center px-4 py-3 mb-2 rounded-lg active:bg-gray-200 dark:active:bg-gray-800"
             onPress={() => router.push(item.route)}
           >
-            <item.icon size={24} />
+            <item.icon size={24} className="text-base text-foreground" />
             <Text className="ml-3 text-lg">{item.label}</Text>
           </TouchableOpacity>
         ))}
