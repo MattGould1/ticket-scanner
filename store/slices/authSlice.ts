@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "~/utils/axios";
 
 interface AuthState {
   token: string | null;
@@ -22,21 +24,12 @@ export const login = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // Replace with your actual API call
-      const response = await axios.post("http://localhost:3000/auth/login", {
+      const response = await api.post("/auth/login", {
         username,
         password,
       });
 
-      // const data = await response.json();
-
-      // if (!response.ok) {
-      //   return rejectWithValue(data.message);
-      // }
-
-      // Store token in AsyncStorage
-      // @TODO save this token for further uses
-      // await AsyncStorage.setItem("token", data.token);
+      await AsyncStorage.setItem("token", response.data.token);
 
       return response.data;
     } catch (error) {
@@ -56,8 +49,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.token = null;
       state.user = null;
-      // @TODO remove this token
-      // AsyncStorage.removeItem("token");
+      AsyncStorage.removeItem("token");
     },
     setCredentials: (state, action) => {
       state.token = action.payload.token;
