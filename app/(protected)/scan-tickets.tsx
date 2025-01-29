@@ -1,12 +1,18 @@
 import { BarcodeScanningResult, CameraView } from "expo-camera";
 import { router, useRouter } from "expo-router";
-import { ArrowLeft, Settings } from "lucide-react-native";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Settings,
+  Terminal,
+} from "lucide-react-native";
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Container from "~/components/layout/Container";
 import { Header } from "~/components/layout/Header";
 import { ThemedText } from "~/components/ThemedText";
 import { ThemedView } from "~/components/ThemedView";
+import { AlertTitle, AlertDescription, Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { verifyTicket, VerifyTicketResponse } from "~/utils/api";
 
@@ -23,13 +29,12 @@ export default function ScanTicketScreen() {
     try {
       // @TODO get ticket id from a real QR code
       const ticket = await verifyTicket({ id: "ticket-id" });
+      console.log("hmm", ticket);
+      setTicketData(ticket);
 
       if (ticket.hasBeenUsed) {
         setError("This ticket has already been used.");
-        return;
       }
-
-      setTicketData(ticket);
     } catch (err) {
       setError("Something went wrong verifying this ticket. Please try again.");
     }
@@ -45,7 +50,7 @@ export default function ScanTicketScreen() {
     <ThemedView>
       <Header
         title="Scan Tickets"
-        showBack={true}
+        showBack={false}
         rightComponent={
           <TouchableOpacity onPress={() => console.log("touch")}>
             <Settings size={24} color="white" />
@@ -53,16 +58,65 @@ export default function ScanTicketScreen() {
         }
       />
 
+      {error != null && (
+        <ThemedView className="p-4">
+          <Alert
+            icon={AlertTriangle}
+            variant="destructive"
+            className="max-w-xl"
+          >
+            <AlertTitle>Error!</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </ThemedView>
+      )}
+
       {ticketData != null && (
-        <Container padding={4}>
-          <ThemedView>
-            <ThemedText>Scanned Type: {scannedData.type}</ThemedText>
-            <ThemedText>Scanned Data: {scannedData.data}</ThemedText>
-            <Button onPress={resetQRCodeScan}>
-              <ThemedText>Tap to scan next ticket</ThemedText>
-            </Button>
-          </ThemedView>
-        </Container>
+        <ThemedView className="p-4">
+          <View className="mb-4 space-y-4">
+            <View>
+              <ThemedText className="text-2xl font-bold">
+                {ticketData.event.name}
+              </ThemedText>
+              <ThemedText className="text-gray-500">
+                {ticketData.event.date}
+              </ThemedText>
+              <ThemedText className="text-gray-500">
+                {ticketData.event.venue}
+              </ThemedText>
+            </View>
+
+            <View>
+              <ThemedText className="font-semibold">Ticket Details</ThemedText>
+              <ThemedText>Type: {ticketData.ticketType}</ThemedText>
+              {ticketData.seat && (
+                <ThemedText>
+                  Seat: Section {ticketData.seat.section}, Row{" "}
+                  {ticketData.seat.row}, Seat {ticketData.seat.number}
+                </ThemedText>
+              )}
+            </View>
+
+            <View>
+              <ThemedText className="font-semibold">Ticket Holder</ThemedText>
+              <ThemedText>{ticketData.owner.name}</ThemedText>
+              <ThemedText>{ticketData.owner.email}</ThemedText>
+              {ticketData.owner.phone && (
+                <ThemedText>{ticketData.owner.phone}</ThemedText>
+              )}
+            </View>
+
+            <View>
+              <ThemedText className="font-semibold">
+                Purchase Information
+              </ThemedText>
+              <ThemedText>Purchase Date: {ticketData.purchasedDate}</ThemedText>
+            </View>
+          </View>
+          <Button onPress={resetQRCodeScan}>
+            <ThemedText>Tap to scan next ticket</ThemedText>
+          </Button>
+        </ThemedView>
       )}
 
       {scanned == false && (
