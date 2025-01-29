@@ -73,7 +73,7 @@ const Button = React.forwardRef<
       value={buttonTextVariants({
         variant,
         size,
-        className: "web:pointer-events-none",
+        className: "web:pointer-events-none text-white",
       })}
     >
       <Pressable
@@ -93,7 +93,8 @@ Button.displayName = "Button";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: `${Colors.buttonColour}`,
+    // @TODO Place this in a constant file somewhere
+    backgroundColor: "rgb(245 102 0)",
   },
 });
 

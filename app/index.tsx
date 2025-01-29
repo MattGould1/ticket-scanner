@@ -142,7 +142,7 @@ export default function LoginScreen() {
 
   return (
     <PublicRoute>
-      <View className="bg-current">
+      <View>
         <Container fullScreen={true} center={true}>
           <Image
             source={require("@/assets/images/logo.svg")}
