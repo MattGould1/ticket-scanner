@@ -51,8 +51,11 @@ export default function ScanTicketScreen() {
       <Header
         title="Scan Tickets"
         showBack={false}
+        showMenu={true}
         rightComponent={
-          <TouchableOpacity onPress={() => console.log("touch")}>
+          <TouchableOpacity
+            onPress={() => router.push("/(protected)/settings")}
+          >
             <Settings size={24} color="white" />
           </TouchableOpacity>
         }
@@ -82,12 +85,8 @@ export default function ScanTicketScreen() {
                     <Text className="text-2xl font-bold">
                       {ticketData.event.name}
                     </Text>
-                    <Text className="text-gray-500">
-                      {ticketData.event.date}
-                    </Text>
-                    <Text className="text-gray-500">
-                      {ticketData.event.venue}
-                    </Text>
+                    <Text>{ticketData.event.date}</Text>
+                    <Text>{ticketData.event.venue}</Text>
                   </View>
 
                   <View>

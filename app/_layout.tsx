@@ -31,8 +31,6 @@ export default function RootLayout() {
 
   const { setColorScheme, colorScheme } = useLibColorScheme();
 
-  setColorScheme("dark");
-
   useEffect(() => {
     const init = async () => {
       try {
@@ -41,6 +39,8 @@ export default function RootLayout() {
         setInitialized(true);
       }
     };
+
+    setColorScheme("dark");
 
     init();
   }, []);

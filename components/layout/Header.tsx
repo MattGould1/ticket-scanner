@@ -35,14 +35,20 @@ export function Header({
       >
         <View className="flex-row items-center gap-3">
           {showBack && (
-            <TouchableOpacity onPress={() => router.back()}>
-              <ArrowLeft size={24} color="white" />
+            <TouchableOpacity
+              className="text-base text-foreground"
+              onPress={() => router.back()}
+            >
+              <ArrowLeft size={24} />
             </TouchableOpacity>
           )}
 
           {showMenu && (
-            <TouchableOpacity onPress={onMenuPress}>
-              <Menu size={24} color="white" />
+            <TouchableOpacity
+              className="text-base text-foreground"
+              onPress={onMenuPress}
+            >
+              <Menu size={24} />
             </TouchableOpacity>
           )}
 
