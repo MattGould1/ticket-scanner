@@ -19,9 +19,9 @@ export function DrawerContent() {
   };
 
   const menuItems = [
-    { icon: Camera, label: "Scan Tickets", route: "/scan-tickets" },
-    { icon: Settings, label: "Settings", route: "/settings" },
-  ];
+    { icon: Camera, label: "Scan Tickets", route: "/(protected)/scan-tickets" },
+    { icon: Settings, label: "Settings", route: "/(protected)/settings" },
+  ] as const;
 
   return (
     <View className="flex-1">
@@ -41,7 +41,7 @@ export function DrawerContent() {
             className="flex-row items-center px-4 py-3 mb-2 rounded-lg active:bg-gray-200 dark:active:bg-gray-800"
             onPress={() => router.push(item.route)}
           >
-            <item.icon size={24} color="white" weight="bold" />
+            <item.icon size={24} />
             <Text className="ml-3 text-lg">{item.label}</Text>
           </TouchableOpacity>
         ))}
