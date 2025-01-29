@@ -10,8 +10,7 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Container from "~/components/layout/Container";
 import { Header } from "~/components/layout/Header";
-import { ThemedText } from "~/components/ThemedText";
-import { ThemedView } from "~/components/ThemedView";
+import { Text } from "~/components/ui/text";
 import { AlertTitle, AlertDescription, Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { verifyTicket, VerifyTicketResponse } from "~/utils/api";
@@ -47,7 +46,7 @@ export default function ScanTicketScreen() {
   };
 
   return (
-    <ThemedView>
+    <View>
       <Header
         title="Scan Tickets"
         showBack={false}
@@ -59,7 +58,7 @@ export default function ScanTicketScreen() {
       />
 
       {error != null && (
-        <ThemedView className="p-4">
+        <View className="p-4">
           <Alert
             icon={AlertTriangle}
             variant="destructive"
@@ -68,55 +67,47 @@ export default function ScanTicketScreen() {
             <AlertTitle>Error!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
-        </ThemedView>
+        </View>
       )}
 
       {ticketData != null && (
-        <ThemedView className="p-4">
+        <View className="p-4">
           <View className="mb-4 space-y-4">
             <View>
-              <ThemedText className="text-2xl font-bold">
+              <Text className="text-2xl font-bold">
                 {ticketData.event.name}
-              </ThemedText>
-              <ThemedText className="text-gray-500">
-                {ticketData.event.date}
-              </ThemedText>
-              <ThemedText className="text-gray-500">
-                {ticketData.event.venue}
-              </ThemedText>
+              </Text>
+              <Text className="text-gray-500">{ticketData.event.date}</Text>
+              <Text className="text-gray-500">{ticketData.event.venue}</Text>
             </View>
 
             <View>
-              <ThemedText className="font-semibold">Ticket Details</ThemedText>
-              <ThemedText>Type: {ticketData.ticketType}</ThemedText>
+              <Text className="font-semibold">Ticket Details</Text>
+              <Text>Type: {ticketData.ticketType}</Text>
               {ticketData.seat && (
-                <ThemedText>
+                <Text>
                   Seat: Section {ticketData.seat.section}, Row{" "}
                   {ticketData.seat.row}, Seat {ticketData.seat.number}
-                </ThemedText>
+                </Text>
               )}
             </View>
 
             <View>
-              <ThemedText className="font-semibold">Ticket Holder</ThemedText>
-              <ThemedText>{ticketData.owner.name}</ThemedText>
-              <ThemedText>{ticketData.owner.email}</ThemedText>
-              {ticketData.owner.phone && (
-                <ThemedText>{ticketData.owner.phone}</ThemedText>
-              )}
+              <Text className="font-semibold">Ticket Holder</Text>
+              <Text>{ticketData.owner.name}</Text>
+              <Text>{ticketData.owner.email}</Text>
+              {ticketData.owner.phone && <Text>{ticketData.owner.phone}</Text>}
             </View>
 
             <View>
-              <ThemedText className="font-semibold">
-                Purchase Information
-              </ThemedText>
-              <ThemedText>Purchase Date: {ticketData.purchasedDate}</ThemedText>
+              <Text className="font-semibold">Purchase Information</Text>
+              <Text>Purchase Date: {ticketData.purchasedDate}</Text>
             </View>
           </View>
           <Button onPress={resetQRCodeScan}>
-            <ThemedText>Tap to scan next ticket</ThemedText>
+            <Text>Tap to scan next ticket</Text>
           </Button>
-        </ThemedView>
+        </View>
       )}
 
       {scanned == false && (
@@ -130,7 +121,7 @@ export default function ScanTicketScreen() {
           ></CameraView>
         </Container>
       )}
-    </ThemedView>
+    </View>
   );
 }
 

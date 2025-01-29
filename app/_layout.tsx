@@ -11,7 +11,8 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useColorScheme as useLibColorScheme } from "~/lib/useColorScheme";
+
 import { Provider } from "react-redux";
 import { store } from "~/store/store";
 import { AuthProvider } from "~/contexts/AuthContext";
@@ -23,11 +24,14 @@ import { View, ActivityIndicator } from "react-native";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
   const [initialized, setInitialized] = useState(false);
+
+  const { setColorScheme, colorScheme } = useLibColorScheme();
+
+  setColorScheme("dark");
 
   useEffect(() => {
     const init = async () => {

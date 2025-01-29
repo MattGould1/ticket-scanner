@@ -1,10 +1,10 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { useAppSelector } from "../../store/hooks";
 import { ArrowLeft, Bell, Menu } from "lucide-react-native";
+import { Text } from "../ui/text";
 
 interface HeaderProps {
   title?: string;
@@ -29,7 +29,7 @@ export function Header({
   const user = useAppSelector((state) => state.auth.user);
 
   return (
-    <ThemedView className="border-b border-gray-200 dark:border-gray-800">
+    <View className="border-b border-gray-200 dark:border-gray-800">
       <View
         className="flex-row items-center justify-between px-4"
         style={styles.header}
@@ -47,9 +47,9 @@ export function Header({
             </TouchableOpacity>
           )}
 
-          <ThemedText className="text-lg font-semibold">
+          <Text className="text-lg font-semibold">
             {title || user?.name || "Welcome"}
-          </ThemedText>
+          </Text>
         </View>
 
         <View className="flex-row items-center gap-4">
@@ -66,7 +66,7 @@ export function Header({
           {rightComponent}
         </View>
       </View>
-    </ThemedView>
+    </View>
   );
 }
 

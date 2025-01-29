@@ -6,11 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useColorScheme } from "~/lib/useColorScheme";
 import Container from "~/components/layout/Container";
-import { ThemedView } from "~/components/ThemedView";
 import FormCard from "~/components/cards/FormCard";
-import { ThemedText } from "~/components/ThemedText";
+import { Text } from "~/components/ui/text";
 import { Button } from "../components/ui/button";
 import { useRouter } from "expo-router";
 import { Input } from "~/components/ui/input";
@@ -33,7 +31,6 @@ export default function LoginScreen() {
   );
 
   const router = useRouter();
-  const { setColorScheme } = useColorScheme();
 
   const {
     control,
@@ -47,8 +44,6 @@ export default function LoginScreen() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  setColorScheme("dark");
 
   const onSubmit = async (data: FormData) => {
     const result = await dispatch(
@@ -72,7 +67,7 @@ export default function LoginScreen() {
           disabled={isLoading}
           render={({ field: { onChange, value } }) => (
             <View>
-              <ThemedText className="mb-2">Username</ThemedText>
+              <Text className="mb-2">Username</Text>
               <Input
                 placeholder="Username"
                 value={value}
@@ -97,7 +92,7 @@ export default function LoginScreen() {
           control={control}
           render={({ field: { onChange, value } }) => (
             <View>
-              <ThemedText className="mb-2">Password</ThemedText>
+              <Text className="mb-2">Password</Text>
               <View className="relative">
                 <Input
                   placeholder="Password"
@@ -120,9 +115,7 @@ export default function LoginScreen() {
                 </TouchableOpacity>
               </View>
               {errors.password && (
-                <ThemedText style={{ color: "red" }}>
-                  {errors.password.message}
-                </ThemedText>
+                <Text style={{ color: "red" }}>{errors.password.message}</Text>
               )}
             </View>
           )}
@@ -141,17 +134,17 @@ export default function LoginScreen() {
         ></Controller>
 
         <Button disabled={isLoading} onPress={handleSubmit(onSubmit)}>
-          <ThemedText>Login</ThemedText>
+          <Text>Login</Text>
         </Button>
 
-        {error && <ThemedText style={{ color: "red" }}>{error}</ThemedText>}
+        {error && <Text style={{ color: "red" }}>{error}</Text>}
       </View>
     </View>
   );
 
   return (
     <PublicRoute>
-      <ThemedView>
+      <View>
         <Container fullScreen={true} center={true}>
           <Image
             source={require("@/assets/images/logo.svg")}
@@ -164,7 +157,7 @@ export default function LoginScreen() {
             children={cardContent}
           ></FormCard>
         </Container>
-      </ThemedView>
+      </View>
     </PublicRoute>
   );
 }
