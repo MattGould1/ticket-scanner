@@ -20,11 +20,11 @@ const initialState: AuthState = {
 export const login = createAsyncThunk(
   "auth/login",
   async (
-    { username, password }: { username: string; password: string },
+    { email, password }: { email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
-      const response = await apiLogin(username, password);
+      const response = await apiLogin(email, password);
       await AsyncStorage.setItem("token", response.data.token);
 
       return response.data;

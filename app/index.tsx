@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { PublicRoute } from "~/components/PublicRoute";
 
 type FormData = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -36,8 +36,8 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      username: "",
-      password: "",
+      email: "matthew@gould.com",
+      password: "password",
     },
   });
 
@@ -45,7 +45,7 @@ export default function LoginScreen() {
 
   const onSubmit = async (data: FormData) => {
     const result = await dispatch(
-      login({ username: data.username, password: data.password })
+      login({ email: data.email, password: data.password })
     ).unwrap();
 
     dispatch(setCredentials({ token: result.token, user: "matthew gould" }));
@@ -65,22 +65,22 @@ export default function LoginScreen() {
           disabled={isLoading}
           render={({ field: { onChange, value } }) => (
             <View>
-              <Text className="mb-2">Username</Text>
+              <Text className="mb-2">Email</Text>
               <Input
-                placeholder="Username"
+                placeholder="Email"
                 value={value}
                 onChangeText={onChange}
-                aria-labelledby="Username"
-                aria-errormessage="Username invalid."
+                aria-labelledby="Email"
+                aria-errormessage="Email invalid."
                 editable={!isLoading}
               />
             </View>
           )}
-          name="username"
+          name="email"
           rules={{
             required: {
               value: true,
-              message: "Username is required",
+              message: "Email is required",
             },
           }}
           defaultValue=""

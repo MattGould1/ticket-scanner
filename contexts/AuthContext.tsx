@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useAppSelector } from "../store/hooks";
 
 interface AuthContextType {
@@ -22,10 +22,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, [token]);
 
-  const value = {
-    isAuthenticated: !!token,
-    isLoading,
-  };
+  const value = useMemo(
+    () => ({
+      isAuthenticated: !!token,
+      isLoading,
+    }),
+    [token, isLoading]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

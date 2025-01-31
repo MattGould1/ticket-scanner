@@ -5,7 +5,7 @@ let _api: AxiosInstance | undefined;
 const getApi = () => {
   if (!_api) {
     _api = axios.create({
-      baseURL: "http://localhost:3000",
+      baseURL: "http://localhost:3000/rest",
     });
 
     _api.interceptors.response.use(
@@ -20,9 +20,9 @@ const getApi = () => {
   return _api;
 };
 
-export const apiLogin = async (username: string, password: string) => {
+export const apiLogin = async (email: string, password: string) => {
   return await getApi().post("/auth/login", {
-    username,
+    email,
     password,
   });
 };

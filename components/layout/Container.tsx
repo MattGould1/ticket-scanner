@@ -16,10 +16,10 @@ export default function CenteredFullScreenContainer({
   return (
     <View
       className={`w-full flex ${center ? "justify-center items-center" : ""} ${
-        fullScreen ? "h-screen" : ""
+        fullScreen ? "h-full" : ""
       } ${padding ? `p-${padding}` : ""}`}
       {...props}
-      style={fullScreen ? {} : { height: height - 60 }}
+      style={fullScreen ? [{ height: height - 60 }] : [{}]}
     ></View>
   );
 }

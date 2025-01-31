@@ -21,6 +21,8 @@ import {
 } from "@react-navigation/native";
 import { NAV_THEME } from "~/lib/constants";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { ApolloProvider } from "@apollo/client";
+import client from "~/utils/apollo-client";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -92,8 +94,10 @@ export default function RootLayout() {
       <GestureHandlerRootView>
         <Provider store={store}>
           <AuthProvider>
-            <Slot />
-            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <ApolloProvider client={client}>
+              <Slot />
+              <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            </ApolloProvider>
           </AuthProvider>
         </Provider>
       </GestureHandlerRootView>
