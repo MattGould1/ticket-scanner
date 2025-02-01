@@ -1,5 +1,10 @@
 import { gql } from "@apollo/client";
 import client from "~/utils/apollo-client"; // You'll need to create this
+import {
+  VerifyEventAttendeeMutation,
+  VerifyEventAttendeeMutationResult,
+  VerifyEventAttendeeMutationVariables,
+} from "../gql/graphql";
 
 const GET_EVENTS = gql`
   query getEvents($pagination: PaginationInput) {
@@ -12,6 +17,7 @@ const GET_EVENTS = gql`
         venue
         description
         image
+        teamId
       }
       total
     }
@@ -41,12 +47,21 @@ export type VerifyTicketArgs = {
 const verifyEventAttendee = async ({
   eventId,
   eventAttendeeId,
-}: VerifyTicketArgs): Promise<any> => {
+}: VerifyEventAttendeeMutationVariables): Promise<
+  VerifyEventAttendeeMutation["verifyEventAttendee"]
+> => {
   try {
-    const { data } = await client.mutate({
+    const { data } = await client.mutate<
+      VerifyEventAttendeeMutation,
+      VerifyEventAttendeeMutationVariables
+    >({
       mutation: VERIFY_EVENT_ATTENDEE,
       variables: { eventId, eventAttendeeId },
     });
+
+    if (data == null) {
+      throw new Error("No data returned from verifyEventAttendee");
+    }
     return data.verifyEventAttendee;
   } catch (err) {
     console.error(err);

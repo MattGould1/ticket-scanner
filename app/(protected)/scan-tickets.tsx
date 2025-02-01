@@ -19,22 +19,23 @@ import { Header } from "~/components/layout/Header";
 import { Text } from "~/components/ui/text";
 import { AlertTitle, AlertDescription, Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
-import {
-  GET_EVENTS,
-  verifyEventAttendee,
-  verifyTicket,
-  VerifyTicketResponse,
-} from "~/utils/api";
+import { GET_EVENTS, verifyEventAttendee } from "~/utils/api";
 import ActionCard from "~/components/cards/ActionCard";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { useQuery } from "@apollo/client";
+import {
+  Event,
+  GetEventsQuery,
+  GetEventsQueryVariables,
+  VerifyEventAttendeeMutation,
+} from "~/utils/gql/graphql";
 
 export default function ScanTicketScreen() {
   const [scanned, setScanned] = useState(false);
-  const [ticketData, setTicketData] = useState<VerifyTicketResponse | null>(
-    null
-  );
-  const [currentEventId, setCurrentEventId] = useState<string | null>(null);
+  const [verifiedEventAttendee, setVerifiedEventAttendeeData] = useState<
+    VerifyEventAttendeeMutation["verifyEventAttendee"] | null
+  >(null);
+  const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { colorScheme } = useColorScheme();
 
@@ -42,7 +43,7 @@ export default function ScanTicketScreen() {
     loading,
     error: eventsError,
     data: eventsData,
-  } = useQuery(GET_EVENTS, {
+  } = useQuery<GetEventsQuery, GetEventsQueryVariables>(GET_EVENTS, {
     fetchPolicy: "network-only",
     onError: (error) => {
       console.error("Failed to fetch events:", error);
@@ -51,7 +52,7 @@ export default function ScanTicketScreen() {
   });
 
   const handleQRCodeScanned = async (result: BarcodeScanningResult) => {
-    if (currentEventId == null) {
+    if (currentEvent == null) {
       setError("Please select an event first.");
       return;
     }
@@ -60,16 +61,14 @@ export default function ScanTicketScreen() {
 
     try {
       // @TODO get ticket id from a real QR code
-      const ticket = await verifyEventAttendee({
-        eventId: currentEventId,
+      const verified = await verifyEventAttendee({
+        eventId: currentEvent.id,
         eventAttendeeId: "679c448e471d4d80ca6a781c",
       });
 
-      console.log("ticket", ticket);
+      setVerifiedEventAttendeeData(verified);
 
-      setTicketData(ticket);
-
-      if (ticket.hasBeenUsed) {
+      if (verified.alreadyCheckedIn) {
         setError("This ticket has already been used.");
       }
     } catch (err) {
@@ -79,7 +78,7 @@ export default function ScanTicketScreen() {
 
   const resetQRCodeScan = () => {
     setScanned(false);
-    setTicketData(null);
+    setVerifiedEventAttendeeData(null);
     setError(null);
   };
 
@@ -108,13 +107,13 @@ export default function ScanTicketScreen() {
         </View>
       )}
 
-      {eventsData && currentEventId == null && (
+      {eventsData && currentEvent == null && (
         <View>
           {eventsData?.getEvents.events.map((event) => (
             <Pressable
               key={event.id}
               onPress={() => {
-                setCurrentEventId(event.id);
+                setCurrentEvent(event);
               }}
               className="m-4 p-4 bg-blue-500 rounded-lg"
             >
@@ -130,44 +129,42 @@ export default function ScanTicketScreen() {
         </View>
       )}
 
-      {ticketData != null && (
+      {verifiedEventAttendee != null && currentEvent != null && (
         <View className="p-4">
           <ActionCard
-            title={ticketData.owner.name}
+            title={verifiedEventAttendee.eventAttendee.name}
             content={
               <View className="p-4">
                 <View className="mb-4 space-y-4">
                   <View>
                     <Text className="text-2xl font-bold">
-                      {ticketData.event.name}
+                      {currentEvent.name}
                     </Text>
-                    <Text>{ticketData.event.date}</Text>
-                    <Text>{ticketData.event.venue}</Text>
+                    <Text>
+                      {currentEvent.startDate} - {currentEvent.endDate}
+                    </Text>
+                    <Text>{currentEvent.venue}</Text>
                   </View>
 
                   <View>
                     <Text className="font-semibold">Ticket Details</Text>
-                    <Text>Type: {ticketData.ticketType}</Text>
-                    {ticketData.seat && (
-                      <Text>
-                        Seat: Section {ticketData.seat.section}, Row{" "}
-                        {ticketData.seat.row}, Seat {ticketData.seat.number}
-                      </Text>
-                    )}
+                    <Text>
+                      Type: {verifiedEventAttendee.eventAttendee.ticketId}
+                    </Text>
+
+                    <Text>
+                      Seat: Section TODO, Row TODO, Seat TODO get the ticket
+                      info etc
+                    </Text>
                   </View>
 
                   <View>
                     <Text className="font-semibold">Ticket Holder</Text>
-                    <Text>{ticketData.owner.name}</Text>
-                    <Text>{ticketData.owner.email}</Text>
-                    {ticketData.owner.phone && (
-                      <Text>{ticketData.owner.phone}</Text>
+                    <Text>{verifiedEventAttendee.eventAttendee.name}</Text>
+                    <Text>{verifiedEventAttendee.eventAttendee.email}</Text>
+                    {verifiedEventAttendee.eventAttendee.phone && (
+                      <Text>{verifiedEventAttendee.eventAttendee.phone}</Text>
                     )}
-                  </View>
-
-                  <View>
-                    <Text className="font-semibold">Purchase Information</Text>
-                    <Text>Purchase Date: {ticketData.purchasedDate}</Text>
                   </View>
                 </View>
               </View>
@@ -181,7 +178,7 @@ export default function ScanTicketScreen() {
         </View>
       )}
 
-      {scanned == false && currentEventId != null && (
+      {scanned == false && currentEvent != null && (
         <Container fullScreen={true}>
           <CameraView
             barcodeScannerSettings={{
@@ -193,7 +190,7 @@ export default function ScanTicketScreen() {
           <View style={styles.cameraText} className="p-4 bg-default">
             <TouchableOpacity
               className="text-base text-foreground"
-              onPress={() => setCurrentEventId(null)}
+              onPress={() => setCurrentEvent(null)}
             >
               <ArrowLeft size={24} />
             </TouchableOpacity>

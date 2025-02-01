@@ -3,12 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "~/*": [
-        "*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["*"],
+      "@/*": ["./*"]
     },
     "baseUrl": "."
   },
@@ -18,5 +14,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ]
+  ],
+  "exclude": ["utils/gql/**/*"]
 }
