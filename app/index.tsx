@@ -18,6 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import { login, setCredentials } from "../store/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { PublicRoute } from "~/components/PublicRoute";
+import Constants from "expo-constants";
 
 type FormData = {
   email: string;
@@ -29,6 +30,8 @@ export default function LoginScreen() {
   const { isLoading, error } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
+
+  console.log("constants", Constants.expoConfig.extra.apiUrl);
 
   const {
     control,
