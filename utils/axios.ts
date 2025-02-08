@@ -1,11 +1,12 @@
 import axios, { AxiosInstance } from "axios";
+import Constants from 'expo-constants';
 
 let _api: AxiosInstance | undefined;
 
 const getApi = () => {
   if (!_api) {
     _api = axios.create({
-      baseURL: "http://localhost:3000/rest",
+      baseURL: `${Constants.expoConfig.extra.apiUrl}/rest`,
     });
 
     _api.interceptors.response.use(

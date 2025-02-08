@@ -1,12 +1,6 @@
 import { BarcodeScanningResult, CameraView } from "expo-camera";
-import { router, useRouter } from "expo-router";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Settings,
-  Terminal,
-} from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import { AlertTriangle, ArrowLeft } from "lucide-react-native";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -63,7 +57,7 @@ export default function ScanTicketScreen() {
       // @TODO get ticket id from a real QR code
       const verified = await verifyEventAttendee({
         eventId: currentEvent.id,
-        eventAttendeeId: "679c448e471d4d80ca6a781c",
+        eventAttendeeId: result.data,
       });
 
       setVerifiedEventAttendeeData(verified);
@@ -72,7 +66,8 @@ export default function ScanTicketScreen() {
         setError("This ticket has already been used.");
       }
     } catch (err) {
-      setError("Something went wrong verifying this ticket. Please try again.");
+      // @todo handle errors better, maybe this is an invalid ticket etc etc
+      setError("Invalid ticket.");
     }
   };
 
@@ -104,6 +99,10 @@ export default function ScanTicketScreen() {
             <AlertTitle>Error!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
+
+          <Button className="w-full mt-4" onPress={resetQRCodeScan}>
+            <Text className="text-white">Tap to scan next ticket</Text>
+          </Button>
         </View>
       )}
 
@@ -209,14 +208,10 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: "100%",
-    // height: 400,
     height: "100%",
   },
   cameraText: {
     position: "absolute",
-
-    // left: 0,
-    // right: 0,
     bottom: 0,
   },
 });
