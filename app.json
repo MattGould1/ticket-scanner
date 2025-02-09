@@ -18,10 +18,9 @@
       }
     },
     "web": {
+      "output": "server",
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png",
-      "baseUrl": "/ticket-scanner"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",

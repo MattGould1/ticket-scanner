@@ -1,11 +1,17 @@
 import axios, { AxiosInstance } from "axios";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
+import { HttpsAgent } from "agentkeepalive";
+
+const agent = new HttpsAgent({
+  rejectUnauthorized: false,
+});
 
 let _api: AxiosInstance | undefined;
 
 const getApi = () => {
   if (!_api) {
     _api = axios.create({
+      httpsAgent: agent,
       baseURL: `${Constants.expoConfig.extra.apiUrl}/rest`,
     });
 

@@ -31,7 +31,7 @@ export default function LoginScreen() {
 
   const router = useRouter();
 
-  console.log("constants", Constants.expoConfig.extra.apiUrl);
+  console.log("constants 1", Constants.expoConfig.extra.apiUrl);
 
   const {
     control,
